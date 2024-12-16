@@ -1,0 +1,36 @@
+[{
+  "_id": {
+    "$oid": "6759ff7c55de623ec95f3130"
+  },
+  "Nombre": "Jeans Slim Fit",
+  "Categoria": "Prendas Inferiores",
+  "Precio": 25.99,
+  "Stock": 10
+},
+{
+  "_id": {
+    "$oid": "675a109c2c7e497fb1aa9b67"
+  },
+  "Nombre": "Buso",
+  "Categoria": "Prendas Superiores",
+  "Precio": 99.99,
+  "Stock": 20
+},
+{
+  "_id": {
+    "$oid": "675a1868fe67f3d97d8fe5e2"
+  },
+  "Nombre": "Jogger Negro Hombre",
+  "Categoria": "Prendas Inferiores",
+  "Precio": 30.89,
+  "Stock": 4
+},
+{
+  "_id": {
+    "$oid": "676093a1cd4cf8bd8ed975d8"
+  },
+  "Nombre": "Camiseta Oversized",
+  "Categoria": "Prendas Superiores",
+  "Precio": 50,
+  "Stock": 6
+}]
