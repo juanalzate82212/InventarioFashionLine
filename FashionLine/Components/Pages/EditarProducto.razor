@@ -1,0 +1,67 @@
+﻿@page "/editar-producto/{id}"
+@rendermode InteractiveServer
+@inject ProductService ProductService
+@using FashionLine.Models
+@using FashionLine.Services
+@using Microsoft.AspNetCore.Components.Forms
+@inject NavigationManager NavigationManager
+
+<h3>Editar Producto</h3>
+
+<div class="card">
+    <EditForm Model="@product" OnValidSubmit="HandleValidSubmit" FormName="crearproducto">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <InputText id="nombre" class="form-control" @bind-Value="product.Nombre" />
+        </div>
+
+        <div class="form-group">
+            <label for="categoria">Categoría</label>
+            <InputText id="categoria" class="form-control" @bind-Value="product.Categoria" />
+        </div>
+
+        <div class="form-group">
+            <label for="precio">Precio</label>
+            <InputNumber id="precio" class="form-control" @bind-Value="product.Precio" />
+        </div>
+
+        <div class="form-group">
+            <label for="stock">Stock</label>
+            <InputNumber id="stock" class="form-control" @bind-Value="product.Stock" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter] public string id { get; set; }  // Parámetro de la URL para identificar el producto
+
+    private Producto product = new Producto();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrEmpty(id))
+        {
+            product = await ProductService.GetByIdAsync(id);  // Cargar el producto con el id especificado
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (string.IsNullOrEmpty(id))
+        {
+            await ProductService.CreateAsync(product);  // Crear si no hay id
+        }
+        else
+        {
+            await ProductService.UpdateAsync(id, product);  // Editar si hay id
+        }
+
+        // Redirigir a la lista de productos después de guardar
+        NavigationManager.NavigateTo("/productos");
+    }
+}

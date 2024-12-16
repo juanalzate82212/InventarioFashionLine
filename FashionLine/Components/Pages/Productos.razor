@@ -1,0 +1,66 @@
+﻿@page "/productos"
+@rendermode InteractiveServer
+@using FashionLine.Models
+@using FashionLine.Services
+@inject ProductService ProductService
+@inject NavigationManager NavigationManager
+
+<h3>Productos</h3>
+
+<div class="card">
+    <table class="tabla">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+                <tr class="@GetRowClass(product)">
+                    <td>@product.Nombre</td>
+                    <td>@product.Categoria</td>
+                    <td>@product.Precio</td>
+                    <td>
+                        @if (product.Stock < 5)
+                        {
+                            <span class="text-danger">¡Stock bajo!</span>
+                        }
+                        @product.Stock
+                    </td>
+                    <td>
+                        <a href="/editar-producto/@product.Id" class="btn btn-primary">Editar</a>
+                        <button class="btn btn-danger" @onclick="() => DeleteProduct(product.Id)">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <a href="/crear-producto" class="btn btn-success">Crear Nuevo Producto</a>
+</div>
+
+
+@code {
+    private List<Producto> products = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await ProductService.GetAllAsync();
+    }
+
+    private async Task DeleteProduct(string id)
+    {
+        await ProductService.DeleteAsync(id);
+        products = await ProductService.GetAllAsync();
+    }
+
+    private string GetRowClass(Producto product)
+    {
+        return product.Stock < 5 ? "low-stock" : "";  // "table-warning" resalta en amarillo
+    }
+}

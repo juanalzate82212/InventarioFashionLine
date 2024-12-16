@@ -1,0 +1,49 @@
+﻿@page "/crear-producto"
+@using FashionLine.Models
+@using FashionLine.Services
+@rendermode InteractiveServer
+@inject ProductService ProductService
+@inject NavigationManager NavigationManager
+
+<h3>Crear Producto</h3>
+
+<div class="card">
+    <EditForm Model="@product" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <label for="name">Nombre</label>
+            <InputText id="name" class="form-control" @bind-Value="product.Nombre" />
+        </div>
+
+        <div class="form-group">
+            <label for="category">Categoría</label>
+            <InputText id="category" class="form-control" @bind-Value="product.Categoria" />
+        </div>
+
+        <div class="form-group">
+            <label for="price">Precio</label>
+            <InputNumber id="price" class="form-control" @bind-Value="product.Precio" />
+        </div>
+
+        <div class="form-group">
+            <label for="stock">Stock</label>
+            <InputNumber id="stock" class="form-control" @bind-Value="product.Stock" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </EditForm>
+</div>
+
+@code {
+    private Producto product = new Producto();
+
+    private async Task HandleValidSubmit()
+    {
+        await ProductService.CreateAsync(product);  // Crear el producto
+
+        // Redirigir a la lista de productos después de crear el producto
+        NavigationManager.NavigateTo("/productos");
+    }
+}
